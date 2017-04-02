@@ -3,7 +3,7 @@ import PlaygroundSupport
 
 /* WHAT IS THIS? - This is a program that I built as a submission for scholarship to WWDC 2017. It is made for Swift playgrounds and optimized for a device being held vertically, such as an iPhone.
  
- Though it is simple, it represents the many challenges that face people in life. The square represents a person who has a lot of potential to be successful in life, and the rectangles represent obstacles in the person's life. It may seem like it may take a long time to overcome all of the obstacles -- it may even look like it will not happen at all -- but in the end, all obstacles are overcome, and it is a satisfying achievement.
+ Though it is simple, it represents the many challenges that face people in life. The ball represents a person who has a lot of potential to be successful in life, and the rectangles represent obstacles in the person's life. It may seem like it may take a long time to overcome all of the obstacles -- it may even look like it will not happen at all -- but in the end, all obstacles are overcome, and it is a satisfying achievement.
  
  I relate this to my strive to get a scholarship for WWDC - hopefully the all of the struggle will be worth it.
  
@@ -17,7 +17,7 @@ class Scene: SKScene, SKPhysicsContactDelegate {
     
     // Basic setup
     struct bitMask {
-        static let bitMaskSquare: UInt32 = 0b1 << 0
+        static let bitMaskBall: UInt32 = 0b1 << 0
         static let bitMaskObstacle: UInt32 = 0b1 << 1
     }
     
@@ -46,18 +46,18 @@ class Scene: SKScene, SKPhysicsContactDelegate {
         wall.restitution = 1
         self.physicsBody = wall
         
-        // Set up square
-        let square = SKSpriteNode(color: SKColor(red: 0.909, green: 0.314, blue: 0.25, alpha: 1), size: CGSize(width: 50, height: 50))
-        square.physicsBody = SKPhysicsBody(rectangleOf: square.size)
-        square.physicsBody!.allowsRotation = false
-        square.physicsBody!.categoryBitMask = bitMask.bitMaskSquare
-        square.physicsBody!.contactTestBitMask = bitMask.bitMaskObstacle
-        square.physicsBody!.friction = 0
-        square.physicsBody!.linearDamping = 0
-        square.physicsBody!.restitution = 1
-        square.physicsBody!.velocity = CGVector(dx: 1500, dy: 1500)
-        square.position = CGPoint(x: 0.5 * self.size.width, y: 0.5 * self.size.height)
-        self.addChild(square)
+        // Set up ball
+        let ball = SKSpriteNode(color: SKColor(red: 0.909, green: 0.314, blue: 0.25, alpha: 1), size: CGSize(width: 50, height: 50))
+        ball.physicsBody = SKPhysicsBody(rectangleOf: ball.size)
+        ball.physicsBody!.allowsRotation = false
+        ball.physicsBody!.categoryBitMask = bitMask.bitMaskBall
+        ball.physicsBody!.contactTestBitMask = bitMask.bitMaskObstacle
+        ball.physicsBody!.friction = 0
+        ball.physicsBody!.linearDamping = 0
+        ball.physicsBody!.restitution = 1
+        ball.physicsBody!.velocity = CGVector(dx: 1500, dy: 1500)
+        ball.position = CGPoint(x: 0.5 * self.size.width, y: 0.5 * self.size.height)
+        self.addChild(ball)
         
         // Set up obstacle
         let obstacle = SKSpriteNode(color: SKColor(red: 0.235, green: 0.235, blue: 0.235, alpha: 1), size: CGSize(width: 150, height: 50))
@@ -82,7 +82,7 @@ class Scene: SKScene, SKPhysicsContactDelegate {
     
     // Check for collision
     func didBegin(_ contact: SKPhysicsContact) {
-        if contact.bodyA.categoryBitMask == bitMask.bitMaskSquare && contact.bodyB.categoryBitMask == bitMask.bitMaskObstacle {
+        if contact.bodyA.categoryBitMask == bitMask.bitMaskBall && contact.bodyB.categoryBitMask == bitMask.bitMaskObstacle {
             let obstacle = contact.bodyB.node as! SKSpriteNode
             
             if obstacle.name == "obstacle" {
